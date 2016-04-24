@@ -1,0 +1,63 @@
+{
+    "name": "phpab/analytics-pdo",
+    "type": "library",
+    "description": "Store PhpAb tests participations using PDO DBAL.",
+    "keywords": [
+        "phpab",
+        "analytics-pdo",
+        "analytics",
+        "pdo",
+        "tests",
+        "database"
+    ],
+    "homepage": "https://github.com/phpab/analytics-pdo",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Walter Tamboer",
+            "email": "walter@tamboer.nl",
+            "homepage": "https://github.com/waltertamboer",
+            "role": "Developer"
+        },
+        {
+            "name": "Patrick Heller",
+            "email": "paddy.heller@gmail.com",
+            "homepage": "https://github.com/psren",
+            "role": "Developer"
+        },
+        {
+            "name": "Mariano F.co Benítez Mulet",
+            "email": "nanodevel@gmail.com",
+            "homepage": "https://github.com/pachico",
+            "role": "Developer"
+        }
+
+    ],
+    "require": {
+        "php": "~5.5|~7.0",
+        "phpab/phpab": "dev-master",
+        "ext-sqlite3": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "squizlabs/php_codesniffer": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "PhpAb\\Analytics\\": "src"
+        }
+    },
+    "suggest": {
+        "ext-sqlite3": "Required module to store tests in sqlite3 databases",
+        "ext-mysql": "Required module to store tests in MySql server",
+        "ext-pgsql": "Required module to store tests in PostgreSQL servers"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PhpAb\\Analytics\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}

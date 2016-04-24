@@ -1,0 +1,4 @@
+TAP version 13
+ok 1 - PhpAb\Analytics\PDOTest::testStore
+ok 2 - PhpAb\Analytics\PDOTest::testEmptyParticipationStore
+1..2
