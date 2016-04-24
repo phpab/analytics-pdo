@@ -1,6 +1,7 @@
 # Analytics-PDO
 
-Store [PhpAb](https://github.com/phpab/phpab) tests participations using PDO DBAL.
+Store [PhpAb](https://github.com/phpab/phpab) tests participations using [PDO DBAL](http://php.net/manual/en/book.pdo.php).
+
 
 ## Install
 
@@ -9,6 +10,7 @@ Via Composer
 ``` bash
 $ composer require phpab/analytics-pdo
 ```
+Make sure you have installed the PDO driver you intend to use too.
 
 ## Usage
 
@@ -53,10 +55,21 @@ $engine->start();
 // Here starts PDO interaction
 $pdo = new PDO('sqlite:./phpab.db');
 
+$options = [
+    'runTable' => 'Run',
+    'testIdentifierField' => 'testIdentifier',
+    'variationIdentifierField' => 'variationIdentifier',
+    'userIdentifierField' => 'userIdentifier',
+    'scenarioIdentifierField' => 'scenarioIdentifier',
+    'runIdentifierField' => 'runIdentifier',
+    'createdAtField' => 'createdAt'
+];
+
 // Inject PDO instance together with Analytics Data
 $analytics = new \PhpAb\Analytics\PDO(
     $analyticsData->getTestsData(),
-    $pdo
+    $pdo,
+    $options
 );
 
 // Store it providing a user identifier and a scenario
