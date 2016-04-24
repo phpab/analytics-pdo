@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="PhpAb Analytics PDO Test Suite" tests="2" assertions="2" failures="0" errors="0" time="0.144092">
-    <testsuite name="PhpAb\Analytics\PDOTest" file="/vagrant/analytics-pdo/tests/PDOTest.php" tests="2" assertions="2" failures="0" errors="0" time="0.144092">
-      <testcase name="testStore" class="PhpAb\Analytics\PDOTest" file="/vagrant/analytics-pdo/tests/PDOTest.php" line="35" assertions="1" time="0.140104"/>
-      <testcase name="testEmptyParticipationStore" class="PhpAb\Analytics\PDOTest" file="/vagrant/analytics-pdo/tests/PDOTest.php" line="52" assertions="1" time="0.003988"/>
-    </testsuite>
-  </testsuite>
-</testsuites>
