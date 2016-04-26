@@ -37,7 +37,7 @@ class PDO
      * Initializes a new instance of this class.
      *
      * @param array $participations An array containing tests' chosen variations
-     * @param \PDO $collection PDO instance
+     * @param \PDO $pdo PDO instance
      * @param array $options Target table definition
      */
     public function __construct(array $participations, \PDO $pdo, array $options = [])
@@ -48,30 +48,25 @@ class PDO
     }
 
     /**
+     * Merges default options with userland preferences
+     *
      * @param array $userlandOptions Target table definition
      *
      * @return array
      */
     private function processOptions(array $userlandOptions)
     {
-        $options = [];
-
-        $options['runTable'] = isset($userlandOptions['runTable'])
-            ? $userlandOptions['runTable'] : 'Run';
-        $options['testIdentifierField'] = isset($userlandOptions['testIdentifierFiel'])
-            ? $userlandOptions['testIdentifierField'] : 'testIdentifier';
-        $options['variationIdentifierField'] = isset($userlandOptions['variationIdentifierField'])
-            ? $userlandOptions['variationIdentifierField'] : 'variationIdentifier';
-        $options['userIdentifierField'] = isset($userlandOptions['userIdentifierField'])
-            ? $userlandOptions['userIdentifierField'] : 'userIdentifier';
-        $options['scenarioIdentifierField'] = isset($userlandOptions['scenarioIdentifierField'])
-            ? $userlandOptions['scenarioIdentifierField'] : 'scenarioIdentifier';
-        $options['runIdentifierField'] = isset($userlandOptions['runIdentifierField'])
-            ? $userlandOptions['runIdentifierField'] : 'runIdentifier';
-        $options['createdAtField'] = isset($userlandOptions['createdAtField'])
-            ? $userlandOptions['createdAtField'] : 'createdAt';
-
-        return $options;
+        $defaultOptions = [
+            'runTable' => 'Run',
+            'testIdentifierField' => 'testIdentifier',
+            'variationIdentifierField' => 'variationIdentifier',
+            'userIdentifierField' => 'userIdentifier',
+            'scenarioIdentifierField' => 'scenarioIdentifier',
+            'runIdentifierField' => 'runIdentifier',
+            'createdAtField' => 'createdAt'
+        ];
+        
+        return array_merge($defaultOptions, $userlandOptions);
     }
 
     /**
