@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3d8629045f8cc1e634ab991b8a3715a9",
-    "content-hash": "ec43ecb33deed98f26fdb7734620c5e9",
+    "hash": "a9a9e790fb72aaa084f5a8e994f96c59",
+    "content-hash": "ca605e13ff202685d4156663fb5b16b7",
     "packages": [
         {
             "name": "phpab/phpab",
@@ -1166,7 +1166,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "~5.5|~7.0"
+        "php": "~5.5|~7.0",
+        "ext-pdo": "*"
     },
     "platform-dev": []
 }
