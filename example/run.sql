@@ -10,7 +10,7 @@
 
 CREATE TABLE `Run` (
 	`testIdentifier`	TEXT NOT NULL,
-	`variationIdentifier`	TEXT NOT NULL,
+	`variantIdentifier`	TEXT NOT NULL,
 	`userIdentifier`	TEXT NOT NULL,
 	`scenarioIdentifier`	TEXT NOT NULL,
 	`runIdentifier`	TEXT NOT NULL,
