@@ -26,7 +26,7 @@ class PDO
     private $pdo;
 
     /**
-     * @var array Test identifiers and variation identifiers
+     * @var array Test identifiers and variant identifiers
      */
     private $participations;
 
@@ -38,7 +38,7 @@ class PDO
     /**
      * Initializes a new instance of this class.
      *
-     * @param array $participations An array containing tests' chosen variations
+     * @param array $participations An array containing tests' chosen variants
      * @param \PDO $pdo PDO instance
      * @param array $options Target table definition
      */
@@ -61,7 +61,7 @@ class PDO
         $defaultOptions = [
             'runTable' => 'Run',
             'testIdentifierField' => 'testIdentifier',
-            'variationIdentifierField' => 'variationIdentifier',
+            'variantIdentifierField' => 'variantIdentifier',
             'userIdentifierField' => 'userIdentifier',
             'scenarioIdentifierField' => 'scenarioIdentifier',
             'runIdentifierField' => 'runIdentifier',
@@ -87,16 +87,16 @@ class PDO
 
         $uniqueRunIdentifier = uniqid('', true);
 
-        foreach ($this->participations as $testIdentifier => $variationIdentifier) {
+        foreach ($this->participations as $testIdentifier => $variantIdentifier) {
             $sql = 'INSERT INTO ' . $this->options['runTable'] . ' '
                 . '(' . $this->options['testIdentifierField'] . ', '
-                . $this->options['variationIdentifierField'] . ', '
+                . $this->options['variantIdentifierField'] . ', '
                 . $this->options['userIdentifierField'] . ', '
                 . $this->options['scenarioIdentifierField'] . ', '
                 . $this->options['runIdentifierField'] . ', '
                 . $this->options['createdAtField'] . ')'
                 . ' VALUES '
-                . '(:testIdentifier, :variationIdentifier, :userIdentifier, '
+                . '(:testIdentifier, :variantIdentifier, :userIdentifier, '
                 . ':scenarioIdentifier, :runIdentifier, :createdAt)';
 
             $currentTimeStamp = date('Y-m-d H:i:s');
@@ -109,7 +109,7 @@ class PDO
 
             try {
                 $statement->bindParam(':testIdentifier', $testIdentifier);
-                $statement->bindParam(':variationIdentifier', $variationIdentifier);
+                $statement->bindParam(':variantIdentifier', $variantIdentifier);
                 $statement->bindParam(':userIdentifier', $userIdentifier);
                 $statement->bindParam(':scenarioIdentifier', $scenarioIdentifier);
                 $statement->bindParam(':runIdentifier', $uniqueRunIdentifier);

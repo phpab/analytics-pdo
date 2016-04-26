@@ -10,7 +10,6 @@
 
 namespace PhpAb\Analytics;
 
-use PhpAb\Analytics\Exception;
 use Mockery as m;
 
 class PDOTest extends \PHPUnit_Framework_TestCase
@@ -98,7 +97,7 @@ class PDOTest extends \PHPUnit_Framework_TestCase
             ->andThrow(new \Exception);
         $this->mockedPDO->shouldReceive('prepare')
             ->andReturn($this->mockedStatement);
-        
+
         $analytics = new PDO(
             [
             'bernard' => 'black',
