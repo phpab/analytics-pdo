@@ -10,31 +10,31 @@
 
 namespace PhpAb\Analytics;
 
+use PhpAb\Analytics\Exception;
+use Mockery as m;
+
 class PDOTest extends \PHPUnit_Framework_TestCase
 {
-
     private $mockedPDO;
     private $mockedStatement;
 
     public function setUp()
     {
         parent::setUp();
-
-        $this->mockedStatement = $this->getMockBuilder('\PDOStatement')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedPDO = $this->getMockBuilder('\PDO')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedPDO->method('prepare')
-            ->willReturn($this->mockedStatement);
+        $this->mockedPDO = m::mock('\PDO');
+        $this->mockedStatement = m::mock('\PDOStatement');
     }
 
     public function testStore()
     {
         // Arrange
+        $this->mockedStatement->shouldReceive('bindParam')
+            ->andReturn(true);
+        $this->mockedStatement->shouldReceive('execute')
+            ->andReturn(true);
+        $this->mockedPDO->shouldReceive('prepare')
+            ->andReturn($this->mockedStatement);
+
         $analytics = new \PhpAb\Analytics\PDO(
             [
             'bernard' => 'black',
@@ -60,5 +60,57 @@ class PDOTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertFalse($result);
+    }
+
+    /**
+     * @expectedException PhpAb\Analytics\Exception\PDOPrepareException
+     */
+    public function testPrepareException()
+    {
+        // Arrange
+        $this->mockedPDO->shouldReceive('prepare')
+            ->andReturn(false);
+
+        $analytics = new PDO(
+            [
+            'bernard' => 'black',
+            'walter' => 'white'
+            ],
+            $this->mockedPDO
+        );
+
+        // Act
+        $analytics->store('1.2.3.4-abc', 'homepage.php');
+
+        // Assert
+        // ...
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testExecuteException()
+    {
+        // Arrange
+        $this->mockedStatement->shouldReceive('bindParam')
+            ->andReturn(true);
+        $this->mockedStatement->shouldReceive('execute')
+            ->andThrow(new \Exception);
+        $this->mockedPDO->shouldReceive('prepare')
+            ->andReturn($this->mockedStatement);
+        
+        $analytics = new PDO(
+            [
+            'bernard' => 'black',
+            'walter' => 'white'
+            ],
+            $this->mockedPDO
+        );
+
+        // Act
+        $analytics->store('1.2.3.4-abc', 'homepage.php');
+
+        // Assert
+        // ...
     }
 }

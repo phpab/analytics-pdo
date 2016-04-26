@@ -15,7 +15,7 @@ Make sure you have installed the PDO driver you intend to use too.
 ## Usage
 
 This example assumes you have a sqlite3 database created in the same folder where this script is located.
-The sqlite3 definition can be found [here](example/run.sql)
+The sqlite3 definition can be found [here](example/run.sql).
 
 ``` php
 <?php
