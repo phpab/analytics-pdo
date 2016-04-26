@@ -10,6 +10,10 @@
 
 namespace PhpAb\Analytics;
 
+/**
+* @backupGlobals disabled
+* @backupStaticAttributes disabled
+*/
 class PDOTest extends \PHPUnit_Framework_TestCase
 {
 
