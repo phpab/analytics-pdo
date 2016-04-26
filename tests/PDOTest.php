@@ -10,13 +10,10 @@
 
 namespace PhpAb\Analytics;
 
-/**
-* @backupGlobals disabled
-* @backupStaticAttributes disabled
-*/
+use PhpAb\Analytics\Exception;
+
 class PDOTest extends \PHPUnit_Framework_TestCase
 {
-
     private $mockedPDO;
     private $mockedStatement;
 
@@ -28,7 +25,7 @@ class PDOTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->mockedPDO = $this->getMockBuilder('\PDO')
+        $this->mockedPDO = $this->getMockBuilder('\PhpAb\Analytics\MockPDO')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -64,5 +61,69 @@ class PDOTest extends \PHPUnit_Framework_TestCase
 
         // Assert
         $this->assertFalse($result);
+    }
+
+    /**
+     * @expectedException PhpAb\Analytics\Exception\PDOPrepareException
+     */
+    public function testPrepareException()
+    {
+        // Arrange
+        $this->mockedPDO = $this->getMockBuilder('\PhpAb\Analytics\MockPDO')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->mockedPDO->method('prepare')
+            ->willReturn(false);
+
+        $analytics = new PDO(
+            [
+            'bernard' => 'black',
+            'walter' => 'white'
+            ],
+            $this->mockedPDO
+        );
+
+        // Act
+        $analytics->store('1.2.3.4-abc', 'homepage.php');
+
+        // Assert
+        // ...
+    }
+
+    /**
+     * @expectedException \Exception
+     * @group testme
+     */
+    public function testExecuteException()
+    {
+        // Arrange
+        $this->mockedPDO = $this->getMockBuilder('\PhpAb\Analytics\MockPDO')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->mockedStatement = $this->getMockBuilder('\PDOStatement')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->mockedStatement->method('execute')
+             ->will($this->throwException(new \Exception));
+
+        $this->mockedPDO->method('prepare')
+            ->willReturn($this->mockedStatement);
+
+        $analytics = new PDO(
+            [
+            'bernard' => 'black',
+            'walter' => 'white'
+            ],
+            $this->mockedPDO
+        );
+
+        // Act
+        $analytics->store('1.2.3.4-abc', 'homepage.php');
+
+        // Assert
+        // ...
     }
 }

@@ -10,6 +10,8 @@
 
 namespace PhpAb\Analytics;
 
+use PhpAb\Analytics\Exception;
+
 /**
  * Stores PhpAb participation results using PDO DBAL.
  *
@@ -19,17 +21,17 @@ class PDO
 {
 
     /**
-     * @var \PDO
+     * @var \PDO PDO Instance
      */
     private $pdo;
 
     /**
-     * @var array
+     * @var array Test identifiers and variation identifiers
      */
     private $participations;
 
     /**
-     * @var array
+     * @var array Options for PDO insert statements
      */
     private $options;
 
@@ -65,7 +67,7 @@ class PDO
             'runIdentifierField' => 'runIdentifier',
             'createdAtField' => 'createdAt'
         ];
-        
+
         return array_merge($defaultOptions, $userlandOptions);
     }
 
@@ -100,13 +102,22 @@ class PDO
             $currentTimeStamp = date('Y-m-d H:i:s');
 
             $statement = $this->pdo->prepare($sql);
-            $statement->bindParam(':testIdentifier', $testIdentifier);
-            $statement->bindParam(':variationIdentifier', $variationIdentifier);
-            $statement->bindParam(':userIdentifier', $userIdentifier);
-            $statement->bindParam(':scenarioIdentifier', $scenarioIdentifier);
-            $statement->bindParam(':runIdentifier', $uniqueRunIdentifier);
-            $statement->bindParam(':createdAt', $currentTimeStamp);
-            $statement->execute();
+
+            if (false === $statement) {
+                throw new Exception\PDOPrepareException('Could not prepare PDO statemente. Check configuration.');
+            }
+
+            try {
+                $statement->bindParam(':testIdentifier', $testIdentifier);
+                $statement->bindParam(':variationIdentifier', $variationIdentifier);
+                $statement->bindParam(':userIdentifier', $userIdentifier);
+                $statement->bindParam(':scenarioIdentifier', $scenarioIdentifier);
+                $statement->bindParam(':runIdentifier', $uniqueRunIdentifier);
+                $statement->bindParam(':createdAt', $currentTimeStamp);
+                $statement->execute();
+            } catch (Exception $exc) {
+                throw $exc;
+            }
         }
 
         return true;
