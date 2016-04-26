@@ -11,6 +11,7 @@
 namespace PhpAb\Analytics;
 
 use PhpAb\Analytics\Exception;
+use Mockery as m;
 
 class PDOTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,22 +21,20 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         parent::setUp();
-
-        $this->mockedStatement = $this->getMockBuilder('\PDOStatement')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedPDO = $this->getMockBuilder('\PhpAb\Analytics\MockPDO')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedPDO->method('prepare')
-            ->willReturn($this->mockedStatement);
+        $this->mockedPDO = m::mock('\PDO');
+        $this->mockedStatement = m::mock('\PDOStatement');
     }
 
     public function testStore()
     {
         // Arrange
+        $this->mockedStatement->shouldReceive('bindParam')
+            ->andReturn(true);
+        $this->mockedStatement->shouldReceive('execute')
+            ->andReturn(true);
+        $this->mockedPDO->shouldReceive('prepare')
+            ->andReturn($this->mockedStatement);
+
         $analytics = new \PhpAb\Analytics\PDO(
             [
             'bernard' => 'black',
@@ -69,12 +68,8 @@ class PDOTest extends \PHPUnit_Framework_TestCase
     public function testPrepareException()
     {
         // Arrange
-        $this->mockedPDO = $this->getMockBuilder('\PhpAb\Analytics\MockPDO')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedPDO->method('prepare')
-            ->willReturn(false);
+        $this->mockedPDO->shouldReceive('prepare')
+            ->andReturn(false);
 
         $analytics = new PDO(
             [
@@ -93,25 +88,17 @@ class PDOTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @group testme
      */
     public function testExecuteException()
     {
         // Arrange
-        $this->mockedPDO = $this->getMockBuilder('\PhpAb\Analytics\MockPDO')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedStatement = $this->getMockBuilder('\PDOStatement')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->mockedStatement->method('execute')
-             ->will($this->throwException(new \Exception));
-
-        $this->mockedPDO->method('prepare')
-            ->willReturn($this->mockedStatement);
-
+        $this->mockedStatement->shouldReceive('bindParam')
+            ->andReturn(true);
+        $this->mockedStatement->shouldReceive('execute')
+            ->andThrow(new \Exception);
+        $this->mockedPDO->shouldReceive('prepare')
+            ->andReturn($this->mockedStatement);
+        
         $analytics = new PDO(
             [
             'bernard' => 'black',

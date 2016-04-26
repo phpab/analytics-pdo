@@ -103,7 +103,7 @@ class PDO
 
             $statement = $this->pdo->prepare($sql);
 
-            if (false === $statement) {
+            if (!$statement instanceof \PDOStatement) {
                 throw new Exception\PDOPrepareException('Could not prepare PDO statemente. Check configuration.');
             }
 
