@@ -19,7 +19,6 @@ use PhpAb\Analytics\Exception;
  */
 class PDO
 {
-
     /**
      * @var \PDO PDO Instance
      */
